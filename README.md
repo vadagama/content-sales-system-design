@@ -15,6 +15,8 @@
       - [Описание элементов диаграммы контейнеров](#описание-элементов-диаграммы-контейнеров)
     - [Ключевые атрибуты качества](#ключевые-атрибуты-качества)
     - [Диаграмма развертывания](#диаграмма-развертывания)
+      - [Краткое описание диаграммы](#краткое-описание-диаграммы)
+      - [Перечень используемых сервисов](#перечень-используемых-сервисов)
     - [Безопасность](#безопасность)
       - [Аутентификация и авторизация](#аутентификация-и-авторизация)
       - [Криптография](#криптография)
@@ -187,6 +189,187 @@
 Ниже представлена диаграмма развертывания для публикации решения в облаке. Данная диаграмма показывает как логические элементы решения (см. Контейнерная диаграмма) приземляются на сервисы PaaS и SaaS вендора облачной инфраструктуры.
 
 ![Deployment diagram!](images/deployment.png 'Deployment diagram')
+
+#### Краткое описание диаграммы
+
+As stated in the Target container diagram we propose to use AWS Managed Streaming for Apache Kafka for synchronous and asynchronous calls between our services.
+
+We could use AWS S3 as a central datastore for assets, data for Artificial Intelligence Modules and bucketsbucket for our Farmacy Food and Farmacy Family backups.
+
+We propose to use additional API layer with AWS API Gateway before Web and Mobile apps for additional security, Insulates the clients from how the application is partitioned into services, reduces the number of requests/roundtrips, etc
+
+We place the Social Network Module application engine into AWS EC2 Container and connect it to the RDS Database for storing all domain-specific information. For storing assets and user files we propose to use AWS S3 buckets.
+
+Inventory Replenishment Module and eDietary Module. All modules related to artificial intelligence based on serverless computing approach and requires services such as AWS Forecast, AWS Lambda, AWS RDS for storing relational data and AWS DynamoDB for NoSQL.
+
+Users Engagement Analys module requires such services as AWS Glue for ETL operations and AWS Authena for data analysis (see ADR-11 Data Analysis Capability).
+
+Profile Module should use Lambda for computing and AWS RDS for storing data.
+
+Clinics Gateway Module is useduses for secure communication between clinics and Farmacy Familyour system and consists of AWS Lambda for computing, DynamoDB for storing data and also AWS API Gateway. It also requires a secure VPN connection with AWS Transit Gateway.
+
+We have prepared a list of all the necessary services for your convenience.
+
+The Multi-zone approach will be used to allow redundancy of critical data and high availability on the next step of the project.
+
+#### Перечень используемых сервисов
+
+The table below provides a list of infrastructure elements that are required for the implementation of the project.
+
+<table>
+  <tr>
+   <td><strong>Наименование сервиса</strong>
+   </td>
+   <td><strong>Вендор</strong>
+   </td>
+   <td><strong>Описание</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>Application Load Balancer
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/network-firewall">AWS Network Firewall </a>is a managed service that makes it easy to deploy essential network protections for all of your Amazon Virtual Private Clouds (VPCs)
+   </td>
+  </tr>
+  <tr>
+   <td>Route 53
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/route53">Amazon Route 53</a> is a scalable and highly available Domain Name System (DNS) service
+   </td>
+  </tr>
+  <tr>
+   <td>Transit Gateway
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/ru/transit-gateway">Amazon Transit Gateway</a> connect Amazon VPCs, AWS accounts, and on-premises networks to a single gateway
+   </td>
+  </tr>
+  <tr>
+   <td>EC2
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/ec2">Amazon EC2</a> provides Secure and resizable compute capacity to support virtually any workload
+   </td>
+  </tr>
+  <tr>
+   <td>Cognito
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/cognito">Amazon Cognito</a> provides Simple and Secure User Sign-Up, Sign-In, and Access Control
+   </td>
+  </tr>
+  <tr>
+   <td>S3
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/s3">Amazon S3</a> - Object storage built to retrieve any amount of data from anywhere
+   </td>
+  </tr>
+  <tr>
+   <td>API Gateway
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/api-gateway">Amazon Api Gateway</a> for create, maintain, and secure APIs at any scale
+   </td>
+  </tr>
+  <tr>
+   <td>CloudFront
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/cloudfront">Amazon CloudFront</a> securely deliver content with low latency and high transfer speeds
+   </td>
+  </tr>
+  <tr>
+   <td>SNS
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/sns">Amazon SNS</a> for Fully managed pub/sub messaging, SMS, email, and mobile push notifications
+   </td>
+  </tr>
+  <tr>
+   <td>MSK
+   </td>
+   <td>AWS
+   </td>
+   <td>Securely stream data with a fully managed, highly available <a href="https://aws.amazon.com/msk">Apache Kafka service</a>
+   </td>
+  </tr>
+  <tr>
+   <td>DynamoDB
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/dynamodb">Amazon DynamoDB</a> - fast, flexible NoSQL database service for single-digit millisecond performance at any scale
+   </td>
+  </tr>
+  <tr>
+   <td>RDS
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/rds/">Amazon RDS</a> - Set up, operate, and scale a relational database in the cloud with just a few clicks
+   </td>
+  </tr>
+  <tr>
+   <td>Glue
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/glue/">Amazon Glue</a> - is a fully-managed, pay-as-you-go, extract, transform, and load (ETL) service that automates the time-consuming steps of data preparation for analytics.
+   </td>
+  </tr>
+  <tr>
+   <td>Athena
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/athena/">Amazon Athena</a> - Amazon Athena is an interactive query service that makes it easy to analyze data in Amazon S3 using standard SQL. Athena is serverless, so there is no infrastructure to manage, and you pay only for the queries that you run.
+   </td>
+  </tr>
+  <tr>
+   <td>Lambda
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/">Amazon Lambda</a> for run code without thinking about servers or clusters
+   </td>
+  </tr>
+  <tr>
+   <td>Forecast
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/forecast/">Forecast</a> business outcomes easily and accurately using machine learning
+   </td>
+  </tr>
+  <tr>
+   <td>DataDog
+   </td>
+   <td>DataDog
+   </td>
+   <td><a href="https://www.datadoghq.com/">Datadog</a> is an observability service for cloud-scale applications, providing monitoring of servers, databases, tools, and services, through a SaaS-based data analytics platform
+   </td>
+  </tr>
+  <tr>
+   <td>CloudFormation
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/cloudformation">Amazon CloudFormation</a> helps speed up cloud provisioning with infrastructure as code
+   </td>
+  </tr>
+</table>
 
 ### Безопасность
 

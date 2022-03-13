@@ -227,7 +227,6 @@
    </td>
    <td><a href="https://aws.amazon.com/cognito/">Amazon S3</a> предоставляет простой безопасный механизм аутентификации и авторизации пользователей (Sign-Up, Sign-In, and Access Control)
    </td>
-  </tr>
    <td><a href="https://www.keycloak.org/">Keycloak</a></td> is an Open Source Identity and Access Management
   </tr>
   <tr>

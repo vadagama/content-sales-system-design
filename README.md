@@ -214,7 +214,7 @@ The Multi-zone approach will be used to allow redundancy of critical data and hi
 
 #### Перечень используемых сервисов
 
-The table below provides a list of infrastructure elements that are required for the implementation of the project.
+Предаставленный ниже перечень инфраструктурных сервисов необходим для реализации проектируемого решения в облаке Amazon Cloud.
 
 <table>
   <tr>
@@ -226,35 +226,19 @@ The table below provides a list of infrastructure elements that are required for
    </td>
   </tr>
   <tr>
-   <td>Application Load Balancer
+   <td>WAF
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/network-firewall">AWS Network Firewall </a>is a managed service that makes it easy to deploy essential network protections for all of your Amazon Virtual Private Clouds (VPCs)
+   <td><a href="https://aws.amazon.com/network-firewall">AWS Network Firewall</a> это управляемый сервис которые предоставляет функционал защиты сети от аттак
    </td>
-  </tr>
+</tr>
   <tr>
-   <td>Route 53
+   <td>EKS
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/route53">Amazon Route 53</a> is a scalable and highly available Domain Name System (DNS) service
-   </td>
-  </tr>
-  <tr>
-   <td>Transit Gateway
-   </td>
-   <td>AWS
-   </td>
-   <td><a href="https://aws.amazon.com/ru/transit-gateway">Amazon Transit Gateway</a> connect Amazon VPCs, AWS accounts, and on-premises networks to a single gateway
-   </td>
-  </tr>
-  <tr>
-   <td>EC2
-   </td>
-   <td>AWS
-   </td>
-   <td><a href="https://aws.amazon.com/ec2">Amazon EC2</a> provides Secure and resizable compute capacity to support virtually any workload
+   <td><a href="https://aws.amazon.com/eks">Amazon EKS</a> это управляемый сервис Kubernetes
    </td>
   </tr>
   <tr>
@@ -262,7 +246,7 @@ The table below provides a list of infrastructure elements that are required for
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/cognito">Amazon Cognito</a> provides Simple and Secure User Sign-Up, Sign-In, and Access Control
+   <td><a href="https://aws.amazon.com/cognito">Amazon Cognito</a> предоставляет простой безопасный механизм аутентификации и авторизации пользователей (Sign-Up, Sign-In, and Access Control)
    </td>
   </tr>
   <tr>
@@ -270,7 +254,7 @@ The table below provides a list of infrastructure elements that are required for
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/s3">Amazon S3</a> - Object storage built to retrieve any amount of data from anywhere
+   <td><a href="https://aws.amazon.com/s3">Amazon S3</a> - Объектное хранилище для долгосрочного хранения информации и документов
    </td>
   </tr>
   <tr>
@@ -278,7 +262,7 @@ The table below provides a list of infrastructure elements that are required for
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/api-gateway">Amazon Api Gateway</a> for create, maintain, and secure APIs at any scale
+   <td><a href="https://aws.amazon.com/api-gateway">Amazon Api Gateway</a> предназначен для управления API
    </td>
   </tr>
   <tr>
@@ -286,7 +270,7 @@ The table below provides a list of infrastructure elements that are required for
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/cloudfront">Amazon CloudFront</a> securely deliver content with low latency and high transfer speeds
+   <td><a href="https://aws.amazon.com/cloudfront">Amazon CloudFront</a> средство распределенной доставки и дистрибуции статического контента
    </td>
   </tr>
   <tr>
@@ -294,23 +278,7 @@ The table below provides a list of infrastructure elements that are required for
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/sns">Amazon SNS</a> for Fully managed pub/sub messaging, SMS, email, and mobile push notifications
-   </td>
-  </tr>
-  <tr>
-   <td>MSK
-   </td>
-   <td>AWS
-   </td>
-   <td>Securely stream data with a fully managed, highly available <a href="https://aws.amazon.com/msk">Apache Kafka service</a>
-   </td>
-  </tr>
-  <tr>
-   <td>DynamoDB
-   </td>
-   <td>AWS
-   </td>
-   <td><a href="https://aws.amazon.com/dynamodb">Amazon DynamoDB</a> - fast, flexible NoSQL database service for single-digit millisecond performance at any scale
+   <td><a href="https://aws.amazon.com/sns">Amazon SNS</a> управляемый брокер сообщений для pub/sub messaging, SMS, email и push уведомлений
    </td>
   </tr>
   <tr>
@@ -318,39 +286,7 @@ The table below provides a list of infrastructure elements that are required for
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/rds/">Amazon RDS</a> - Set up, operate, and scale a relational database in the cloud with just a few clicks
-   </td>
-  </tr>
-  <tr>
-   <td>Glue
-   </td>
-   <td>AWS
-   </td>
-   <td><a href="https://aws.amazon.com/glue/">Amazon Glue</a> - is a fully-managed, pay-as-you-go, extract, transform, and load (ETL) service that automates the time-consuming steps of data preparation for analytics.
-   </td>
-  </tr>
-  <tr>
-   <td>Athena
-   </td>
-   <td>AWS
-   </td>
-   <td><a href="https://aws.amazon.com/athena/">Amazon Athena</a> - Amazon Athena is an interactive query service that makes it easy to analyze data in Amazon S3 using standard SQL. Athena is serverless, so there is no infrastructure to manage, and you pay only for the queries that you run.
-   </td>
-  </tr>
-  <tr>
-   <td>Lambda
-   </td>
-   <td>AWS
-   </td>
-   <td><a href="https://aws.amazon.com/">Amazon Lambda</a> for run code without thinking about servers or clusters
-   </td>
-  </tr>
-  <tr>
-   <td>Forecast
-   </td>
-   <td>AWS
-   </td>
-   <td><a href="https://aws.amazon.com/forecast/">Forecast</a> business outcomes easily and accurately using machine learning
+   <td><a href="https://aws.amazon.com/rds/">Amazon RDS</a> - легко масштабируемый сервис управления реляционными базами данных
    </td>
   </tr>
   <tr>
@@ -358,7 +294,7 @@ The table below provides a list of infrastructure elements that are required for
    </td>
    <td>DataDog
    </td>
-   <td><a href="https://www.datadoghq.com/">Datadog</a> is an observability service for cloud-scale applications, providing monitoring of servers, databases, tools, and services, through a SaaS-based data analytics platform
+   <td><a href="https://www.datadoghq.com/">Datadog</a> SaaS сервис для мониторинга, логирования и трассировки
    </td>
   </tr>
   <tr>

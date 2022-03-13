@@ -1,2 +1,14 @@
-# sale_content_app_design
-Design of an application that sells content
+# Design of an application that sells content
+
+## Исходные данные
+
+### Требования
+
+- Необходимо спроектировать архитектуру приложения продающего контент
+- Витрина: мобильное приложение
+- Оплата App Store, Google Play
+
+### Ограничения
+
+- Количество пользователей - 100 000
+- 100 TPS

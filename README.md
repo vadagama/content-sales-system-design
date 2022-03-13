@@ -310,6 +310,16 @@
    <td><a href="https://www.metabase.com/start/oss/">Metabase </a> is an open-source Business Intelligence(BI) tool
    </td>
   </tr>
+  <tr>
+   <td>Amazon Managed Streaming for Apache Kafka
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/msk/">Amazon Managed Streaming for Apache Kafka</a> Управляемый сервис Kafka
+   </td>
+   <td><a href="https://www.metabase.com/start/oss/">Apache Kafka </a>  is an open-source distributed event streaming platform
+   </td>
+  </tr>
 </table>
 
 ## Безопасность

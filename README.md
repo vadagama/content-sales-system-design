@@ -207,7 +207,7 @@
    </td>
    <td><a href="https://aws.amazon.com/network-firewall">AWS Network Firewall</a> это управляемый сервис которые предоставляет функционал защиты сети от аттак
    </td>
-   <td><a href="https://shadowd.zecure.org/overview/introduction/">Shadow Daemon</a>
+   <td><a href="https://shadowd.zecure.org/overview/introduction/">Shadow Daemon</a> is a collection of tools to detect, record, and block attacks on web applications.
    </td>
 </tr>
   <tr>
@@ -217,7 +217,7 @@
    </td>
    <td><a href="https://aws.amazon.com/eks">Amazon EKS</a> это управляемый сервис Kubernetes
    </td>
-   <td><a href="https://github.com/kubernetes/kubernetes">Kubernetes</a>
+   <td><a href="https://github.com/kubernetes/kubernetes">Kubernetes</a> is an open-source system for automating deployment, scaling, and management of containerized applications
    </td>
   </tr>
   <tr>
@@ -225,16 +225,19 @@
    </td>
    <td>AWS
    </td>
-   <td><a href="https://www.keycloak.org/">Keycloak</a></td>
+   <td><a href="https://aws.amazon.com/cognito/">Amazon S3</a> предоставляет простой безопасный механизм аутентификации и авторизации пользователей (Sign-Up, Sign-In, and Access Control)
+   </td>
+  </tr>
+   <td><a href="https://www.keycloak.org/">Keycloak</a></td> is an Open Source Identity and Access Management
   </tr>
   <tr>
    <td>S3
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/s3">Amazon S3</a> - Объектное хранилище для долгосрочного хранения информации и документов
+   <td><a href="https://aws.amazon.com/s3">Amazon S3</a> объектное хранилище для долгосрочного хранения информации и документов
    </td>
-      <td><a href="https://ceph.io/en/discover/technology/">Ceph</a>
+      <td><a href="https://ceph.io/en/discover/technology/">Ceph</a> is an open-source, distributed storage system
    </td>
   </tr>
   <tr>
@@ -244,7 +247,7 @@
    </td>
    <td><a href="https://aws.amazon.com/api-gateway">Amazon Api Gateway</a> предназначен для управления API
    </td>
-      <td><a href="https://konghq.com/kong/">Kong</a>
+      <td><a href="https://konghq.com/kong/">Kong</a> the world’s most popular API gateway. Built for microservices and distributed architectures
    </td>
   </tr>
   <tr>
@@ -274,7 +277,7 @@
    </td>
    <td><a href="https://aws.amazon.com/rds/">Amazon RDS</a> - легко масштабируемый сервис управления реляционными базами данных
    </td>
-   <td><a href="https://www.postgresql.org/">PostgreSQL</a>
+   <td><a href="https://www.postgresql.org/">PostgreSQL</a> the World's Most Advanced Open Source Relational Database
    </td>
   </tr>
     <tr>
@@ -284,7 +287,7 @@
    </td>
    <td><a href="https://aws.amazon.com/elasticache/redis">Amazon ElastiCache for Redis</a> - управляемый сервис in-memory хранилища Redis
    </td>
-   <td><a href="https://redis.io/">Redis </a>
+   <td><a href="https://redis.io/">Redis </a> is an open source (BSD licensed), in-memory data structure store
    </td>
   </tr>
   <tr>
@@ -294,7 +297,7 @@
    </td>
    <td><a href="https://www.datadoghq.com/">Datadog</a> SaaS сервис для мониторинга, логирования и трассировки
    </td>
-   <td><a href="https://www.elastic.co/elastic-stack/">Elastic Search, LogStash, Kibana</a>
+   <td><a href="https://www.elastic.co/elastic-stack/">ELK Stack</a> Elastic Search, LogStash, Kibana
    </td>
   </tr>
   <tr>
@@ -304,7 +307,7 @@
    </td>
    <td><a href="https://www.tableau.com/">Tableau</a> Сервис построения аналитических отчетов
    </td>
-   <td><a href="https://grafana.com/">Grafana</a>
+   <td><a href="https://www.metabase.com/start/oss/">Metabase </a> is an open-source Business Intelligence(BI) tool
    </td>
   </tr>
 </table>

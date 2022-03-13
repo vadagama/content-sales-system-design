@@ -15,7 +15,6 @@
       - [Описание элементов диаграммы контейнеров](#описание-элементов-диаграммы-контейнеров)
     - [Ключевые атрибуты качества](#ключевые-атрибуты-качества)
     - [Диаграмма развертывания](#диаграмма-развертывания)
-      - [Краткое описание диаграммы](#краткое-описание-диаграммы)
       - [Перечень используемых сервисов](#перечень-используемых-сервисов)
     - [Безопасность](#безопасность)
       - [Аутентификация и авторизация](#аутентификация-и-авторизация)
@@ -23,7 +22,6 @@
       - [Self-testing](#self-testing)
       - [Приватные подсети](#приватные-подсети)
       - [Технический аудит](#технический-аудит)
-    - [Компоненты архитектуры в приземлении на AWS и OpenSource](#компоненты-архитектуры-в-приземлении-на-aws-и-opensource)
 
 ## Исходные данные
 
@@ -186,31 +184,9 @@
 
 ### Диаграмма развертывания
 
-Ниже представлена диаграмма развертывания для публикации решения в облаке. Данная диаграмма показывает как логические элементы решения (см. Контейнерная диаграмма) приземляются на сервисы PaaS и SaaS вендора облачной инфраструктуры.
+Ниже представлена диаграмма развертывания для публикации решения в облаке. Данная диаграмма показывает как логические элементы решения (см. Контейнерная диаграмма) приземляются на сервисы PaaS и SaaS вендора облачной инфраструктуры Amazon.
 
 ![Deployment diagram!](images/deployment.png 'Deployment diagram')
-
-#### Краткое описание диаграммы
-
-As stated in the Target container diagram we propose to use AWS Managed Streaming for Apache Kafka for synchronous and asynchronous calls between our services.
-
-We could use AWS S3 as a central datastore for assets, data for Artificial Intelligence Modules and bucketsbucket for our Farmacy Food and Farmacy Family backups.
-
-We propose to use additional API layer with AWS API Gateway before Web and Mobile apps for additional security, Insulates the clients from how the application is partitioned into services, reduces the number of requests/roundtrips, etc
-
-We place the Social Network Module application engine into AWS EC2 Container and connect it to the RDS Database for storing all domain-specific information. For storing assets and user files we propose to use AWS S3 buckets.
-
-Inventory Replenishment Module and eDietary Module. All modules related to artificial intelligence based on serverless computing approach and requires services such as AWS Forecast, AWS Lambda, AWS RDS for storing relational data and AWS DynamoDB for NoSQL.
-
-Users Engagement Analys module requires such services as AWS Glue for ETL operations and AWS Authena for data analysis (see ADR-11 Data Analysis Capability).
-
-Profile Module should use Lambda for computing and AWS RDS for storing data.
-
-Clinics Gateway Module is useduses for secure communication between clinics and Farmacy Familyour system and consists of AWS Lambda for computing, DynamoDB for storing data and also AWS API Gateway. It also requires a secure VPN connection with AWS Transit Gateway.
-
-We have prepared a list of all the necessary services for your convenience.
-
-The Multi-zone approach will be used to allow redundancy of critical data and high availability on the next step of the project.
 
 #### Перечень используемых сервисов
 
@@ -289,6 +265,14 @@ The Multi-zone approach will be used to allow redundancy of critical data and hi
    <td><a href="https://aws.amazon.com/rds/">Amazon RDS</a> - легко масштабируемый сервис управления реляционными базами данных
    </td>
   </tr>
+    <tr>
+   <td>ElastiCache for Redis
+   </td>
+   <td>AWS
+   </td>
+   <td><a href="https://aws.amazon.com/elasticache/redis">Amazon ElastiCache for Redis</a> - управляемый сервис in-memory хранилища Redis
+   </td>
+  </tr>
   <tr>
    <td>DataDog
    </td>
@@ -298,11 +282,11 @@ The Multi-zone approach will be used to allow redundancy of critical data and hi
    </td>
   </tr>
   <tr>
-   <td>CloudFormation
+   <td>Tableau
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/cloudformation">Amazon CloudFormation</a> helps speed up cloud provisioning with infrastructure as code
+   <td><a href="https://www.tableau.com/">Tableau</a> Сервис построения аналитических отчетов
    </td>
   </tr>
 </table>
@@ -330,7 +314,3 @@ The Multi-zone approach will be used to allow redundancy of critical data and hi
 #### Технический аудит
 
 Необходимо регулярно проводить внешний аудит системы для того, чтобы иметь независимую оценку о защищенности системы и хранимых данных.
-
-### Компоненты архитектуры в приземлении на AWS и OpenSource
-
--

@@ -197,6 +197,8 @@
    </td>
    <td><strong>Описание</strong>
    </td>
+   <td><strong>Альтернатива On-Premise</strong>
+   </td>
   </tr>
   <tr>
    <td>WAF
@@ -204,6 +206,8 @@
    <td>AWS
    </td>
    <td><a href="https://aws.amazon.com/network-firewall">AWS Network Firewall</a> это управляемый сервис которые предоставляет функционал защиты сети от аттак
+   </td>
+   <td><a href="https://shadowd.zecure.org/overview/introduction/">Shadow Daemon</a>
    </td>
 </tr>
   <tr>
@@ -213,14 +217,15 @@
    </td>
    <td><a href="https://aws.amazon.com/eks">Amazon EKS</a> это управляемый сервис Kubernetes
    </td>
+   <td><a href="https://github.com/kubernetes/kubernetes">Kubernetes</a>
+   </td>
   </tr>
   <tr>
    <td>Cognito
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/cognito">Amazon Cognito</a> предоставляет простой безопасный механизм аутентификации и авторизации пользователей (Sign-Up, Sign-In, and Access Control)
-   </td>
+   <td><a href="https://www.keycloak.org/">Keycloak</a></td>
   </tr>
   <tr>
    <td>S3
@@ -228,6 +233,8 @@
    <td>AWS
    </td>
    <td><a href="https://aws.amazon.com/s3">Amazon S3</a> - Объектное хранилище для долгосрочного хранения информации и документов
+   </td>
+      <td><a href="https://ceph.io/en/discover/technology/">Ceph</a>
    </td>
   </tr>
   <tr>
@@ -237,6 +244,8 @@
    </td>
    <td><a href="https://aws.amazon.com/api-gateway">Amazon Api Gateway</a> предназначен для управления API
    </td>
+      <td><a href="https://konghq.com/kong/">Kong</a>
+   </td>
   </tr>
   <tr>
    <td>CloudFront
@@ -244,6 +253,8 @@
    <td>AWS
    </td>
    <td><a href="https://aws.amazon.com/cloudfront">Amazon CloudFront</a> средство распределенной доставки и дистрибуции статического контента
+   </td>
+   <td><a href="https://www.jsdelivr.com/">jsDelivr</a> средство распределенной доставки и дистрибуции JavaScript контента
    </td>
   </tr>
   <tr>
@@ -253,6 +264,8 @@
    </td>
    <td><a href="https://aws.amazon.com/sns">Amazon SNS</a> управляемый брокер сообщений для pub/sub messaging, SMS, email и push уведомлений
    </td>
+   <td><a href="https://www.rabbitmq.com/">RabbitMQ</a> Потребуется также дополнительная реализация функционала отправки писем, SMS и т.д.
+   </td>
   </tr>
   <tr>
    <td>RDS
@@ -260,6 +273,8 @@
    <td>AWS
    </td>
    <td><a href="https://aws.amazon.com/rds/">Amazon RDS</a> - легко масштабируемый сервис управления реляционными базами данных
+   </td>
+   <td><a href="https://www.postgresql.org/">PostgreSQL</a>
    </td>
   </tr>
     <tr>
@@ -269,6 +284,8 @@
    </td>
    <td><a href="https://aws.amazon.com/elasticache/redis">Amazon ElastiCache for Redis</a> - управляемый сервис in-memory хранилища Redis
    </td>
+   <td><a href="https://redis.io/">Redis </a>
+   </td>
   </tr>
   <tr>
    <td>DataDog
@@ -277,6 +294,8 @@
    </td>
    <td><a href="https://www.datadoghq.com/">Datadog</a> SaaS сервис для мониторинга, логирования и трассировки
    </td>
+   <td><a href="https://www.elastic.co/elastic-stack/">Elastic Search, LogStash, Kibana</a>
+   </td>
   </tr>
   <tr>
    <td>Tableau
@@ -284,6 +303,8 @@
    <td>AWS
    </td>
    <td><a href="https://www.tableau.com/">Tableau</a> Сервис построения аналитических отчетов
+   </td>
+   <td><a href="https://grafana.com/">Grafana</a>
    </td>
   </tr>
 </table>

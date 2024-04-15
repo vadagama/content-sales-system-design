@@ -1,203 +1,207 @@
-# Архитектура решения для продажи контента
+# Architecture of a solution for selling content
 
-- [Архитектура решения для продажи контента](#архитектура-решения-для-продажи-контента)
-  - [Исходные данные](#исходные-данные)
-    - [Требования](#требования)
-    - [Ограничения](#ограничения)
-  - [Допущения](#допущения)
-  - [Stakeholders и перечень их интересов](#stakeholders-и-перечень-их-интересов)
-  - [Пользовательские сценарии](#пользовательские-сценарии)
-  - [Диаграмма контекста](#диаграмма-контекста)
-  - [Диаграмма контейнеров](#диаграмма-контейнеров)
-    - [Описание элементов диаграммы контейнеров](#описание-элементов-диаграммы-контейнеров)
-  - [Ключевые атрибуты качества](#ключевые-атрибуты-качества)
-  - [Диаграмма развертывания](#диаграмма-развертывания)
-    - [Перечень используемых сервисов](#перечень-используемых-сервисов)
-  - [Безопасность](#безопасность)
-    - [Аутентификация и авторизация](#аутентификация-и-авторизация)
-    - [Криптография](#криптография)
+This document is available in [English](README.md) and [Russian](README_RU.md).
+
+- [Architecture of a solution for selling content](#architecture-of-a-solution-for-selling-content)
+  - [Source data](#source-data)
+    - [Requirements](#requirements)
+    - [Restrictions](#restrictions)
+  - [Assumptions](#assumptions)
+  - [Stakeholders and a list of their interests](#stakeholders-and-a-list-of-their-interests)
+  - [User scenarios](#user-scenarios)
+  - [Context Diagram](#context-diagram)
+  - [Container diagram](#container-diagram)
+    - [Description of container diagram elements](#description-of-container-diagram-elements)
+  - [Key Quality Attributes](#key-quality-attributes)
+  - [Deployment Diagram](#deployment-diagram)
+    - [List of services used](#list-of-services-used)
+  - [Security](#security)
+    - [Authentication and authorisation](#authentication-and-authorisation)
+    - [Cryptography](#cryptography)
     - [Self-testing](#self-testing)
-    - [Приватные подсети](#приватные-подсети)
-    - [Технический аудит](#технический-аудит)
+    - [Private subnets](#private-subnets)
+    - [Technical auditing](#technical-auditing)
 
-## Исходные данные
 
-### Требования
+## Source data
 
-В данном разделе представлены бизнес-требования, которые сформулировал заказчик:
+### Requirements
 
-- **REQ-1**: Необходимо спроектировать архитектуру приложения продающего контент
-- **REQ-2**: Витрина: мобильное приложение
-- **REQ-3**: Оплата App Store, Google Play
+This section presents the business requirements that the customer has formulated:
 
-### Ограничения
+- **REQ-1**: Need to design the architecture of an application that sells content
+- **REQ-2**: Showcase: mobile application
+- **REQ-3**: App Store, Google Play payment
 
-В данном разделе представлены ограничения, которые сформулировал заказчик:
+### Restrictions
 
-- **CON-1**: Количество зарегистрированных пользователей - 100 000
-- **CON-2**: 100 TPS
+This section presents the constraints that the customer has formulated:
 
-## Допущения
+- **CON-1**: Number of registered users - 100,000
+- **CON-2**: 100 TPS.
 
-Здесь описаны основные допущения, которые были выявлены в ходе исследования:
+## Assumptions
 
-- **ASM-1**: Инфраструктура размещена в облаке (Amazon Web Services). На самом деле это не принципиально. Решение может быть развернуто также On Premise с использованием Open Source (перечислены в приложении).
-- **ASM-2**: Предполагаем, что для разработки мы можем задействовать команду разработки (Java - Spring, Javascript - React, Swift, Kotlin)
-- **ASM-3**: Предполагаем, что если у нас нагрузка 100 TPS, то количество запросов на чтение каталога может быть 500 RPS (в пять раз больше)
-- **ASM-4**: Предполагаем, что каталог контента не очень большой (1000 наименований товаров)
-- **ASM-5**: Берем за основу средний размер контента равный 10МБ.
-- **ASM-6**: Предполагаем, что после покупки контент доступен клиенту на определенный период времени. По истечению этого периода контент блокируется.
-- **ASM-7**: Предполагаем, что контент создают сотрудники нашего сервиса
-- **ASM-8**: Берем за основу, что уровень доступности должен быть не менее 99,95
+The key assumptions that were identified in the study are described here:
 
-## Stakeholders и перечень их интересов
+- **ASM-1**: The infrastructure is hosted in the cloud (Amazon Web Services). This is actually not fundamental. The solution can also be deployed On Premise using Open Source (listed in the appendix).
+- **ASM-2**: Assume we can leverage a development team (Java - Spring, Javascript - React, Swift, Kotlin) to develop it
+- **ASM-3**: Assume that if we have a load of 100 TPS, then the number of catalogue read requests can be 500 RPS (five times more)
+- **ASM-4**: Assume that the content catalogue is not very large (1000 items)
+- **ASM-5**: Assume an average content size of 10MB.
+- **ASM-6**: Assume that after the purchase the content is available to the customer for a certain period of time. After this period, the content is blocked.
+- **ASM-7**: Assume that the content is created by employees of our service
+- **ASM-8**: Assume that the availability level should be at least 99.95
 
-В данном разделе описаны группы заинтересованных лиц, которые могут оказывать влияние на дизайн решения, а также перечень их интересов, которые необходимо учитывать при проектировании решения
+## Stakeholders and a list of their interests
 
-- **SH-1: Customer** - наш клиент, который приобретает товары
-  - Простота пользовательского интерфейса и удобство работы
-  - Отсутсвие ошибок при навигации по каталогу и приобретении контента
-  - Скорость работы приложений
-- **SH-2: Administrator** - сотрудник сервиса, который обеспечивает обработку заказов и актуализацию каталога контента
-  - Простота пользовательского интерфейса и удобство работы
-  - Отсутсвие ошибок при администрировании конетнта
-  - Скорость работы веб-приложения
-  - Минимальное количество проблемных обращений от клиентов
-- **SH-3: Content producer** - сотрудник сервиса, который отвечает за создание и актуализацию качественного контента
-  - Удобный пользовательский интерфейс для добавления конетента
-- **SH-4: Product owner** - сотрудник сервиса, который формирует скоуп разработки, отслеживает основные метрики сервиса и определяет приоритеты
-  - Наличие интрументов мониторинга бизнесовых метрик
-  - Стабильность работы сервиса
-  - Возможность выдерживания пиковых нагрузок (например, в случае активации распродаж)
-  - Возможность масштабирования решения (плановое увеличение нагрузки, количества пользователей, объема хранимой информации)
-- **SH-5: Developer** - сотрудник компании, который разработывает функционал сервиса
-  - Современный стэк
-  - Простота разработки и деплоя фич
-  - Простота отладки
-- **SH-6: DevSecOps** - сотрудник компании, который обеспечивает безотказную и безопасную работу сервиса
-  - Понятные средства мониторинга логов, технических метрик
-  - Наличие механизмов оперативного уведомления и сбоях и других проблемах
-  - Простые механизмы автоматического тестирования и деплоя новых фич
+This section describes the stakeholder groups that can influence the design of the solution and a list of their interests that should be considered when designing the solution
 
-## Пользовательские сценарии
+- **SH-1: Customer** - our customer who purchases products
+  - User interface simplicity and ease of use
+  - No errors in catalogue navigation and content acquisition
+  - Application speed
+- **SH-2: Administrator** - the employee of the service, who provides processing of orders and content catalogue actualisation
+  - Simplicity of the user interface and convenience of work
+  - Absence of errors when administering the content catalogue
+  - Speed of work of web-application
+  - Minimal number of problematic requests from clients
+- **SH-3: Content producer** - employee of the service, who is responsible for creating and updating quality content.
+  - Convenient user interface for adding content
+- **SH-4: Product owner** - service employee who forms the development team, monitors the main metrics of the service and determines priorities
+  - Availability of tools for monitoring business metrics
+  - Service stability
+  - Ability to withstand peak loads (for example, in case of activation of sales)
+  - Ability to scale the solution (planned increase in load, number of users, volume of stored information).
+- **SH-5: Developer** - an employee of the company who develops the functionality of the service
+  - Modern stack
+  - Easy to develop and deploy features
+  - Easy debugging
+- **SH-6: DevSecOps** - an employee of the company, who ensures trouble-free and secure operation of the service.
+  - Clear means of monitoring logs and technical metrics
+  - Mechanisms for prompt notification of failures and other problems
+  - Simple mechanisms for automatic testing and deployment of new features
 
-Здесь описаны основные пользовательсткие сценарии, которые удалось выявить в ходе исследования:
+## User scenarios
 
-- Создание контента и наполнение им каталога
-  - **UС-1.1**: Content producer заходит в Product Management Backoffice
-  - **UС-1.2**: Content producer загружает новый контент в виде ZIP архива и добавляет сопровождающую мета-информацию (наименование контента, дата публикации, автор и т.д.)
-- Приобретение клиентом контента
-  - **UС-2.1**: Customer заходит в Google Play или Apple App Store и скачивает наше мобильное приложение
-  - **UС-2.2**: Customer устанавливает приложение на устройство
-  - **UС-2.3**: Customer регистрируется в приложении используя SSO (учетная запись Google ID, либо Apple ID), либо вручную.
-  - **UС-2.4**: Customer используя функции поиска или навигацию по каталогу контента находит требуемый “товар”.
-  - **UС-2.5**: Customer открывает карточку товара.
-  - **UС-2.6**: Customer нажимает кнопку “Купить”.Откроется помощник для осуществления покупки:
-  - **UС-2.7**: Customer заполняет форму ввода персональных данных (ФИО, e-mail, страна, город, etc)
-  - **UС-2.8**: Customer заполняет форму ввода платежных реквизитов (Visa, Mastercard, Paypal, etc)
-  - **UС-2.9**: Customer подтверждает введенные данные и нажимает кнопку “Оплатить”
-  - **UС-2.10**: Customer на на указанный им e-mail получает квитанцию об оплате контента.
-  - **UС-2.11**: После обработки транзакции, Customer-у становится доступен приобретенный контент в разделе “Мои покупки” на определенный период времени.
-  - **UС-2.12**: После истечения периода времени приобретенный контент становится недоступен для просмотра.
-- Адмитристрирование контента:
-  - **UС-3.1**: Administrator заходит в Product Management Backoffice
-  - **UС-3.2**: Administrator может добавить новый контент
-  - **UС-3.3**: Administrator может изменить мета-информацию существующего контента
-  - **UС-3.4**: Administrator может удалить существующий контент из каталога
+Here we describe the main user scenarios that were identified during the study:
 
-## Диаграмма контекста
+- Creating content and populating the catalogue with it
+  - **US-1.1**: Content producer logs into Product Management Backoffice
+  - **US-1.2**: Content producer uploads new content as a ZIP archive and adds accompanying meta-information (content title, publication date, author, etc.)
+- Client acquisition of content
+  - **US-2.1**: Customer goes to Google Play or Apple App Store and downloads our mobile app
+  - **US-2.2**: Customer installs the app on the device
+  - **US-2.3**: Customer signs in to the app using SSO (Google ID or Apple ID account) or manually.
+  - **US-2.4**: Customer using search function or content catalogue navigation finds the desired "product".
+  - **US-2.5**: Customer opens the product card.
+  - **US-2.6**: Customer clicks the "Buy" button.An assistant opens to make the purchase:
+  - **US-2.7**: Customer fills in the form for entering personal data (name, e-mail, country, city, etc).
+  - **US-2.8**: Customer fills in the form for payment details (Visa, Mastercard, Paypal, etc)
+  - **US-2.9**: Customer confirms the entered data and presses the "Pay" button
+  - **US-2.10**: Customer receives a receipt for the content payment at the e-mail address he/she specified.
+  - **US-2.11**: Once the transaction is processed, the purchased content becomes available to the Customer-user in "My Purchases" for a specified period of time.
+  - **US-2.12**: After the time period expires, the purchased content becomes unavailable for viewing.
+- Content Admin:
+  - **US-3.1**: Administrator logs into Product Management Backoffice
+  - **US-3.2**: Administrator can add new content
+  - **US-3.3**: Administrator can change the meta information of existing content
+  - **US-3.4**: Administrator can remove existing content from the catalogue
 
-Ниже представлена упрощенная диаграмма решения на уровне бизнес-контекста. Все пользователи взаимодействуют только с сервисами Google или Apple, а также используют почтовый сервис. Наш сервис интегрован с API Google и API Apple для деплоя приложений, реализации inApp платежей и других функций.
+
+## Context Diagram
+
+Below is a simplified diagram of the solution at the business context level. All users interact only with Google or Apple services and use the mail service. Our service is integrated with Google API and Apple API for application deployment, inApp payments implementation and other functions.
 
 ![Context diagram!](images/context.png 'Context diagram')
 
-## Диаграмма контейнеров
+## Container diagram
 
-Ниже представлена диаграмма решения на уровне отдельных контейнеров (по концепции C4Model). Данная диаграмма показывает из каких элементов на среднем уровне должно состоять проектируемое решение и как эти элементы будут взаимодействовать между собой.
+Below is a diagram of the solution at the level of individual containers (based on the C4Model concept). This diagram shows what elements at the middle level the solution to be designed should consist of and how these elements will interact with each other.
 
 ![Container diagram!](images/container.png 'Container diagram')
 
-### Описание элементов диаграммы контейнеров
+### Description of container diagram elements
 
-- **Mobile Application iOS** - мобильное приложение на платформе Apple iOS, доступное для скачивания в Apple Store
-- **Mobile Application Android** - мобильное приложение на платформе Android, доступное для скачивания в Google Play
-- **Google Play API** - API для взаимодействия с сервисами Google Play. В том числе Google Pay API.
-- **Apple Store API** - API для взаимодействия с сервисами Apple Store. В том числе Apple Pay.
-- **DNS** - сервис доменных имен
-- **CDN** - сервис распределенной доставки и дистрибуции контента
-- **WAF** - сервис для обнаружения и блокирования сетевых атак на сервис
-- **API Gateway** - шлюз, обеспечивающий взаимодействие между клиентскими приложениями и нашими сервисами (API)
-- **Auth Service** - сервис безопасной аутентификации и авторизации пользователей
-- **Products API** - программный интерфейс приложения обеспечивающего работу с каталогом контента
-- **Product and Order Management Backoffice** - веб-интерфейс обеспечивающий работу с каталогом контента, добавление нового контента и актуализацию уже загруженного, а также управление заказами и покупками клиентов
-- **S3 Storage** - объектное хранилище для статического контента и исторических данных
-- **Products Database** - БД для хранении информации о продуктах
-- **Orders Database** - БД для хранения информации о заказах
-- **Products Cache** - промежуточное in-memory хранилище данных о продуктах
-- **Orders API** - программный интерфейс приложения обеспечивающего работу с заказами
-- **Message Broker** - брокер сообщений обеспечивающий асинхронную обработку различных событий (например, отправка Push уведомлений клиентам, или квитанций об оплате)
-- **Reporting** - система построение аналитических отчетов на основе данных из БД
-- **CI/CD** - здесь можно будет хранить артефакты разработки, реализовать репозиторий код, реализовать пайплайны CI/CD
-- **Log and tracing** - сбор, обработки логов и мониторинг
+- **Mobile Application iOS** - Apple iOS mobile application available for download from Apple Store
+- **Mobile Application Android** - mobile application on the Android platform, available for download from Google Play
+- **Google Play API** - API for interacting with Google Play services. The Google Pay API includes.
+- **Apple Store API** - API for interacting with Apple Store services. Including Apple Pay.
+- **DNS** - domain name service
+- **CDN** - Distributed content delivery and distribution service.
+- **WAF** - service for detecting and blocking network attacks on the service
+- **API Gateway** - gateway providing interaction between client applications and our services (APIs)
+- **Auth Service** - service for secure user authentication and authorisation
+- **Products API** - software interface of the application providing work with content catalogue
+- **Product and Order Management Backoffice** - web-interface providing work with content catalogue, adding new content and updating of already uploaded content, as well as managing customer orders and purchases.
+- **S3 Storage** - object storage for static content and historical data
+- **Products Database** - Database for storing information about products
+- **Orders Database** - database for storing information about orders
+- **Products Cache** - intermediate in-memory storage of data on products
+- **Orders API** - programme interface of the application providing work with orders
+- **Message Broker** - message broker providing asynchronous processing of various events (e.g. sending Push notifications to customers or payment receipts)
+- **Reporting** - system for building analytical reports based on data from the database
+- **CI/CD** - here it will be possible to store development artefacts, implement code repository, implement CI/CD pipelines
+- **Log and tracing** - collection, processing and monitoring of logs
 
-## Ключевые атрибуты качества
+## Key Quality Attributes
 
-Поскольку проектируемая архитектура должна опираться на определенные бизнес-требования, ограничения и допущения ниже описаны основные атрибуты качества.
+Since the architecture to be designed must rely on certain business requirements, constraints and assumptions the key quality attributes are described below.
 
-**Products Service**
+**Products Service**.
 
 - **QA-1**: Perfomance
-  - Сервис должен выдерживать не менее 500RPS (в соответствии с допущениями которые мы определили ранее)
+  - The service must be able to withstand at least 500RPS (under the assumptions we defined earlier)
 - **QA-2**: Availability
-  - Сервис должен быть доступен 24/7. Показатель доступности 99.95.
+  - The service must be available 24/7. Availability Score 99.95.
 - **QA-3**: Fault tolerance
-  - Сервис должен иметь возможность в случае падения одного из инстансов быстро переключаться на работающий инстанс
-  - Сервис должен иметь возможности по предотвращению сбоев с использованием территориально распределенных ЦОДов
+  - The service must be able to quickly switch to a working instance in case one of the instances crashes.
+  - The service must be able to prevent failures using geographically distributed data centres.
 
 **Orders Service**
 
 - **QA-4**: Security
-  - Необходимо обеспечить безопасность персданных, сведений и платежах и заказах
-  - Вся информация о сделанных клиентом заказах и проведенных платежах должна быть доступна длительное время и защищена от аттак
+  - The security of data, payment and order information must be ensured.
+  - All information about customer orders and payments must be available for a long period of time and protected from attacks.
 - **QA-5**: Reliability
-  - Сервис заказов должен быть устойчив к нагрузке (в том числе созданной исскуственно) и выдерживать не менее 100TPS
+  - The ordering service must be load-resistant (including artificially generated load) and be able to withstand at least 100TPS.
 - **QA-6**: Fault tolerance
-  - Сервис должен иметь возможность в случае падения одного из инстансов быстро переключаться на работающий инстанс
-  - Сервис должен иметь возможности по предотвращению сбоев с использованием территориально распределенных ЦОДов
+  - The service must be able to quickly switch to a working instance in case one of the instances crashes.
+  - The service must be able to prevent failures using geographically distributed data centres.
 
 **Mobile Applications**
 
 - **QA-7**: Usability
-  - Мобильные приложения должны быть спроектированы таким образом, чтобы пользователю не приходилось привыкать к пользовательскому интерфейсу и проходить какое-либо обучение
+  - Mobile applications should be designed so that the user does not have to get used to the user interface or undergo any training
 - **QA-8**: Modifiability
-  - Приложения должны быть написаны с использованием слабо-связанных программных компонентов для возможности быстрого добавления нового функционала и изменения существующего.
+  - Applications should be written using loosely coupled software components to allow for rapid addition of new functionality and modification of existing functionality.
 - **QA-9**: Availability
-  - Приложения должны иметь высокий уровень доступности. Для нас это означает высокое качество кода мобильных приложений и высокий уровень доступности сервисов Order Service и Product Service
+  - Applications should have a high level of availability. For us, this means high quality mobile app code and high availability of Order Service and Product Service
 
 **Backoffice**
 
 - **QA-10**: Usability
-  - Веб-приложение должно быть интуитивно понятным для пользователя
+  - The web application should be intuitive to the user
 
-## Диаграмма развертывания
+## Deployment Diagram
 
-Ниже представлена диаграмма развертывания для публикации решения в облаке. Данная диаграмма показывает как логические элементы решения (см. Контейнерная диаграмма) приземляются на сервисы PaaS и SaaS вендора облачной инфраструктуры Amazon.
+Below is a deployment diagram for publishing a solution to the cloud. This diagram shows how the logical elements of the solution (see Container diagram) land on the PaaS and SaaS services of cloud infrastructure vendor Amazon.
 
 ![Deployment diagram!](images/deployment.png 'Deployment diagram')
 
-### Перечень используемых сервисов
+### List of services used
 
-Предаставленный ниже перечень инфраструктурных сервисов необходим для реализации проектируемого решения в облаке Amazon Cloud.
+The following list of infrastructure services is necessary to implement the projected solution in Amazon Cloud.
 
 <table>
   <tr>
-   <td><strong>Наименование сервиса</strong>
+   <td><strong>Service name</strong>
    </td>
-   <td><strong>Вендор</strong>
+   <td><strong>Vendor</strong>
    </td>
-   <td><strong>Описание</strong>
+   <td><strong>Description</strong>
    </td>
-   <td><strong>Альтернатива On-Premise</strong>
+   <td><strong>On-Premise Alternative</strong>
    </td>
   </tr>
   <tr>
@@ -205,9 +209,9 @@
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/network-firewall">AWS Network Firewall</a> это управляемый сервис которые предоставляет функционал защиты сети от аттак
+   <td><a href="https://aws.amazon.com/network-firewall">AWS Network Firewall</a> is a managed service that provides functionality to protect your network from attacks.
    </td>
-   <td><a href="https://shadowd.zecure.org/overview/introduction/">Shadow Daemon</a> is a collection of tools to detect, record, and block attacks on web applications.
+    <td><a href="https://shadowd.zecure.org/overview/introduction/">Shadow Daemon</a> - это набор инструментов для обнаружения, регистрации и блокирования атак на веб-приложения.
    </td>
 </tr>
   <tr>
@@ -215,17 +219,17 @@
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/eks">Amazon EKS</a> это управляемый сервис Kubernetes
+  <td><a href="https://aws.amazon.com/eks">Amazon EKS</a> is a managed Kubernetes service
    </td>
-   <td><a href="https://github.com/kubernetes/kubernetes">Kubernetes</a> is an open-source system for automating deployment, scaling, and management of containerized applications
+   <td><a href="https://github.com/kubernetes/kubernetes">Kubernetes</a> is an open-source system for automating deployment, scaling, and management of containerised applications
    </td>
   </tr>
-  <tr>
+<tr>
    <td>Cognito
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/cognito/">Amazon S3</a> предоставляет простой безопасный механизм аутентификации и авторизации пользователей (Sign-Up, Sign-In, and Access Control)
+   <td><a href="https://aws.amazon.com/cognito/">Amazon S3</a> provides a simple secure mechanism for user authentication and authorization (Sign-Up, Sign-In, and Access Control)
    </td>
    <td><a href="https://www.keycloak.org/">Keycloak</a> is an Open Source Identity and Access Management
    </td>
@@ -235,7 +239,7 @@
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/s3">Amazon S3</a> объектное хранилище для долгосрочного хранения информации и документов
+   <td><a href="https://aws.amazon.com/s3">Amazon S3</a> object storage for long-term storage of information and documents
    </td>
       <td><a href="https://ceph.io/en/discover/technology/">Ceph</a> is an open-source, distributed storage system
    </td>
@@ -245,19 +249,19 @@
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/api-gateway">Amazon Api Gateway</a> предназначен для управления API
+   <td><a href="https://aws.amazon.com/api-gateway">Amazon Api Gateway</a> is designed to manage APIs
    </td>
       <td><a href="https://konghq.com/kong/">Kong</a> the world’s most popular API gateway. Built for microservices and distributed architectures
    </td>
   </tr>
-  <tr>
+<tr>
    <td>CloudFront
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/cloudfront">Amazon CloudFront</a> средство распределенной доставки и дистрибуции статического контента
+   <td><a href="https://aws.amazon.com/cloudfront">Amazon CloudFront</a> a means of distributed delivery and distribution of static content
    </td>
-   <td><a href="https://www.jsdelivr.com/">jsDelivr</a> средство распределенной доставки и дистрибуции JavaScript контента
+   <td><a href="https://www.jsdelivr.com/">jsDelivr</a> a tool for distributed delivery and distribution of JavaScript content
    </td>
   </tr>
   <tr>
@@ -265,9 +269,9 @@
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/sns">Amazon SNS</a> управляемый брокер сообщений для pub/sub messaging, SMS, email и push уведомлений
+   <td><a href="https://aws.amazon.com/sns">Amazon SNS</a> managed message broker for pub/sub messaging, SMS, email and push notifications
    </td>
-   <td><a href="https://www.rabbitmq.com/">RabbitMQ</a> Потребуется также дополнительная реализация функционала отправки писем, SMS и т.д.
+   <td><a href="https://www.rabbitmq.com/">RabbitMQ</a> Additional implementation of functionality for sending emails, SMS, etc. will also be required.
    </td>
   </tr>
   <tr>
@@ -275,17 +279,17 @@
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/rds/">Amazon RDS</a> - легко масштабируемый сервис управления реляционными базами данных
+   <td><a href="https://aws.amazon.com/rds/">Amazon RDS</a> is an easily scalable relational database management service
    </td>
    <td><a href="https://www.postgresql.org/">PostgreSQL</a> the World's Most Advanced Open Source Relational Database
    </td>
   </tr>
-    <tr>
+ <tr>
    <td>ElastiCache for Redis
    </td>
    <td>AWS
    </td>
-   <td><a href="https://aws.amazon.com/elasticache/redis">Amazon ElastiCache for Redis</a> - управляемый сервис in-memory хранилища Redis
+   <td><a href="https://aws.amazon.com/elasticache/redis">Amazon ElastiCache for Redis</a> - Redis in-memory storage managed service
    </td>
    <td><a href="https://redis.io/">Redis </a> is an open source (BSD licensed), in-memory data structure store
    </td>
@@ -295,7 +299,7 @@
    </td>
    <td>DataDog
    </td>
-   <td><a href="https://www.datadoghq.com/">Datadog</a> SaaS сервис для мониторинга, логирования и трассировки
+   <td><a href="https://www.datadoghq.com/">Datadog</a> SaaS service for monitoring, logging and tracing
    </td>
    <td><a href="https://www.elastic.co/elastic-stack/">ELK Stack</a> Elastic Search, LogStash, Kibana
    </td>
@@ -305,7 +309,7 @@
    </td>
    <td>AWS
    </td>
-   <td><a href="https://www.tableau.com/">Tableau</a> Сервис построения аналитических отчетов
+      <td><a href="https://www.tableau.com/">Tableau</a> Analytical report building service
    </td>
    <td><a href="https://www.metabase.com/start/oss/">Metabase </a> is an open-source Business Intelligence(BI) tool
    </td>
@@ -317,31 +321,31 @@
    </td>
    <td><a href="https://aws.amazon.com/msk/">Amazon Managed Streaming for Apache Kafka</a> Управляемый сервис Kafka
    </td>
-   <td><a href="https://www.metabase.com/start/oss/">Apache Kafka </a>  is an open-source distributed event streaming platform
+   <td><a href="https://www.metabase.com/start/oss/">Apache Kafka </a> is an open-source distributed event streaming platform
    </td>
   </tr>
 </table>
 
-## Безопасность
+## Security
 
-Для того, чтобы минимизировать риски утечек чувствительной информации о пользователях, их платежных данных и совершенных покупках, а также защитить систему от различных сбоев в ходе аттак на сервис, ниже предложен ряд мер.
+In order to minimise the risks of leaks of sensitive information about users, their payment data and purchases, as well as to protect the system from various failures during attacks on the service, a number of measures are proposed below.
 
-### Аутентификация и авторизация
+### Authentication and authorisation
 
-Для реализации функций безопасной аутентификации и авторизации пользователей (компонент Authentication Service) Amazon предлагает AWS Cognito. Этот сервис можно будет использовать как для авторизации клиентов, так и внутренних пользователей с использованием OpenID Connect, OAuth 2.0 или SAML 2.0. Также он позволяет защитить пользовательские данные от взлома в ходе хаккерских атак.
+Amazon offers AWS Cognito to implement secure user authentication and authorisation functions (Authentication Service component). This service will be able to be used to authorise both customers and internal users using OpenID Connect, OAuth 2.0 or SAML 2.0. It also helps protect user data from being compromised in hacker attacks.
 
-### Криптография
+### Cryptography
 
-Наши данные должны быть покрыты шифрованием с использованием 256-bit Secure Socket Layer (SSL) как при использовании мобильных клиентских приложений, так и веб-приложений во внутреннем контуре.
+Our data must be covered by encryption using 256-bit Secure Socket Layer (SSL) for both mobile client applications and web applications in the back-end.
 
 ### Self-testing
 
-Необходимо обеспечить регулярный прогон тестов: сканирование портов, тестирование на предмет SQL injection. Для хаотичного тестирования можно использовать наработки Netflix (https://github.com/Netflix/SimianArmy)
+You need to ensure regular test runs: port scanning, testing for SQL injection. Netflix (https://github.com/Netflix/SimianArmy) can be used for chaotic testing.
 
-### Приватные подсети
+### Private subnets
 
-Необходимо использовать приватные подсети для защиты от прямого доступа к данным и сервисам из сети Интернет.
+Private subnets should be used to protect against direct access to data and services from the Internet.
 
-### Технический аудит
+### Technical auditing
 
-Необходимо регулярно проводить внешний аудит системы для того, чтобы иметь независимую оценку о защищенности системы и хранимых данных.
+Regular external audits of the system should be performed to provide an independent assessment of the security of the system and stored data.
